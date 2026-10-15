@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const cors=require("cors");
+const cors = require("cors");
 
 const app = express();
 
@@ -9,22 +9,25 @@ require("./conn");
 
 app.use(express.json());
 
-app.use(cors({
-  credentials:true,
-  origin:process.env.FRONTEND_URL,
-}))
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.FRONTEND_URL,
+  })
+);
 
+// Test route to fix the 404 error
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "ScoreMyCV backend is running" });
+});
 
 const UserRoutes = require("./Routes/user");
-const ResumeRoutes=require("./Routes/resume")
+const ResumeRoutes = require("./Routes/resume");
 
 app.use("/api/user", UserRoutes);
-app.use("/api/resume",ResumeRoutes)
+app.use("/api/resume", ResumeRoutes);
 
 app.listen(PORT, () => console.log("our backend is running ", PORT));
 
-// jharshad417_db_user
-
-// Re6iWBMR6cevHEg9
-
-// mongodb+srv://<db_username>:Re6iWBMR6cevHEg9@cluster0.agzs9mn.mongodb.net/?appName=Cluster0
+// Required for Vercel deployment
+module.exports = app;
